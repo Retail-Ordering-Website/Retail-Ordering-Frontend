@@ -12,6 +12,7 @@ export class InventoryManagementComponent implements OnInit {
   isLoading = true;
   error = '';
   updatingStockId: number | null = null;
+  savedStockId: number | null = null;
 
   constructor(private inventoryService: InventoryService) { }
 
@@ -49,6 +50,8 @@ export class InventoryManagementComponent implements OnInit {
       next: (res) => {
         if (res.success || res.data) {
           item.stock = newStock;
+          this.savedStockId = item.productId;
+          setTimeout(() => this.savedStockId = null, 2000);
         }
         this.updatingStockId = null;
       },

@@ -3,9 +3,11 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -13,6 +15,24 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An unexpected error occurred.';
+        
+        if (error.error instanceof ErrorEvent) {
+          // Client-side error
+          errorMessage = error.error.message;
+        } else {
+          // Server-side error
+          // Try to get message from ApiResponse wrapper if available
+          errorMessage = error.error?.message || error.message || errorMessage;
+        }
+        
+        // Global popup error message
+        alert(`System Error: ${errorMessage}`);
+        
+        return throwError(() => error);
+      })
+    );
   }
 }

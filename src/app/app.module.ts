@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from './shared/shared.module';
     SharedModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

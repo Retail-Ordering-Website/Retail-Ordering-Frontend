@@ -63,6 +63,11 @@ export class ProductDetailComponent implements OnInit {
   addToCart(): void {
     if (!this.product) return;
 
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+
     this.isAddingToCart = true;
     this.addedMessage = '';
 

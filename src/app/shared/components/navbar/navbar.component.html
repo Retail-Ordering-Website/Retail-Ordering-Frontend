@@ -10,6 +10,7 @@
     <ul class="nav-links">
       <li><a routerLink="/products" routerLinkActive="active">Catalog</a></li>
       <li *ngIf="isLoggedIn && userRole !== 'Admin'"><a routerLink="/history" routerLinkActive="active">My Orders</a></li>
+      <li *ngIf="isLoggedIn && userRole !== 'Admin'"><a routerLink="/cart" routerLinkActive="active">My Cart</a></li>
       <li *ngIf="isLoggedIn"><a routerLink="/promotions" routerLinkActive="active">Offers</a></li>
       <li *ngIf="isLoggedIn && userRole === 'Admin'" class="admin-link">
         <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
@@ -23,12 +24,6 @@
     </ul>
 
     <div class="nav-actions">
-      <div *ngIf="isLoggedIn" class="cart-link">
-        <a routerLink="/cart" class="icon-btn">
-          <i class="fas fa-shopping-cart"></i>
-        </a>
-      </div>
-
       <div *ngIf="!isLoggedIn" class="auth-buttons">
         <a routerLink="/auth/login" class="btn btn-text">Login</a>
         <a routerLink="/auth/register" class="btn btn-primary">Join Now</a>

@@ -47,10 +47,11 @@
               <input type="number" min="0" [value]="item.stock" #newStockInput class="form-control stock-input" />
               <button 
                 class="btn btn-sm btn-secondary" 
-                [disabled]="updatingStockId === item.productId || +newStockInput.value === item.stock"
+                [disabled]="updatingStockId === item.productId"
                 (click)="updateStock(item, newStockInput.value)">
-                <span *ngIf="updatingStockId === item.productId; else saveText" class="btn-spinner"></span>
-                <ng-template #saveText>Save</ng-template>
+                <span *ngIf="updatingStockId === item.productId" class="btn-spinner"></span>
+                <span *ngIf="updatingStockId !== item.productId && savedStockId === item.productId" class="text-success"><i class="fas fa-check"></i> Saved!</span>
+                <span *ngIf="updatingStockId !== item.productId && savedStockId !== item.productId">Save</span>
               </button>
             </div>
           </td>

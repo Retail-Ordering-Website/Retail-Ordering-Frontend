@@ -20,6 +20,10 @@ export class AuthService {
     this.currentUserSubject.next(this.getTokensFromStorage());
   }
 
+  public isLoggedIn(): boolean {
+    return !!this.currentUserSubject.value;
+  }
+
   public get currentUserValue(): TokenDto | null {
     return this.currentUserSubject.value;
   }

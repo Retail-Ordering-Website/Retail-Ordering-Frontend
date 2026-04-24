@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginDto } from '../../../../core/models/auth.models';
 
@@ -13,7 +13,11 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   onSubmit(): void {
     if (!this.loginData.email || !this.loginData.password) {
@@ -27,12 +31,8 @@ export class LoginComponent {
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
         if (res.data) {
-          const role = res.data.role;
-          if (role === 'Admin') {
-            this.router.navigate(['/admin']);
-          } else {
-            this.router.navigate(['/products']);
-          }
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || (res.data.role === 'Admin' ? '/admin' : '/products');
+          this.router.navigateByUrl(returnUrl);
         } else {
           this.errorMessage = res.message || 'Login failed.';
         }
