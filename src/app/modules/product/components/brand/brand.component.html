@@ -5,17 +5,21 @@
   </div>
 
   <div *ngIf="isAdmin" class="create-form-card">
-    <h3>Add New Brand</h3>
-    <form (ngSubmit)="onCreate()" #brandForm="ngForm" class="inline-form">
+    <h3>{{ editingBrand ? 'Edit Brand' : 'Add New Brand' }}</h3>
+    <form (ngSubmit)="editingBrand ? onUpdate() : onCreate()" #brandForm="ngForm" class="inline-form">
       <div class="form-group">
         <input type="text" name="name" [(ngModel)]="newBrand.name" placeholder="Brand Name" required class="form-control">
       </div>
       <div class="form-group">
         <input type="text" name="desc" [(ngModel)]="newBrand.description" placeholder="Description (Optional)" class="form-control">
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!brandForm.valid || isCreating">
-        <i class="fas fa-plus"></i> Add
-      </button>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="!brandForm.valid || isCreating">
+          <i class="fas" [ngClass]="editingBrand ? 'fa-save' : 'fa-plus'"></i> 
+          {{ editingBrand ? 'Update' : 'Add' }}
+        </button>
+        <button type="button" *ngIf="editingBrand" class="btn btn-text" (click)="cancelEdit()">Cancel</button>
+      </div>
     </form>
     <div *ngIf="message" class="alert success">{{ message }}</div>
   </div>
@@ -29,6 +33,9 @@
         <p *ngIf="brand.description">{{ brand.description }}</p>
       </div>
       <div class="brand-actions" *ngIf="isAdmin">
+        <button class="btn btn-icon" (click)="startEdit(brand)" title="Edit">
+          <i class="fas fa-edit"></i>
+        </button>
         <button class="btn btn-icon-danger" (click)="onDelete(brand.id!)" title="Delete">
           <i class="fas fa-trash"></i>
         </button>
