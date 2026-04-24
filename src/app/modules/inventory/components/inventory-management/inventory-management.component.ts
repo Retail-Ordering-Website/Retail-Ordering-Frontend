@@ -24,7 +24,7 @@ export class InventoryManagementComponent implements OnInit {
     this.isLoading = true;
     this.inventoryService.getInventory().subscribe({
       next: (res) => {
-        if (res.data) {
+        if (res.success && res.data) {
           this.inventoryItems = res.data;
         } else {
           this.error = res.message || 'Failed to load inventory.';

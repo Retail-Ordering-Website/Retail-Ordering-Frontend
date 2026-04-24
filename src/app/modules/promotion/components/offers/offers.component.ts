@@ -65,7 +65,7 @@ export class OffersComponent implements OnInit {
   fetchLoyaltyPoints(): void {
     this.promotionService.getLoyaltyPoints().subscribe({
       next: (res) => {
-        if (res.data !== undefined) this.loyaltyPoints = res.data;
+        if (res.data !== null) this.loyaltyPoints = res.data ?? 0;
       }
     });
   }

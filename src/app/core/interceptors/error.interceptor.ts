@@ -24,18 +24,33 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         let errorMessage = 'An unexpected error occurred.';
-        
-        if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          errorMessage = error.error.message;
-        } else {
-          // Server-side error
-          // Try to get message from ApiResponse wrapper if available
-          errorMessage = error.error?.message || error.message || errorMessage;
+        let errorTitle = 'System Error';
+
+        // Map status codes to titles/messages based on backend middleware
+        switch (error.status) {
+          case 401:
+            errorTitle = 'Unauthorized';
+            errorMessage = 'You are not authorized to perform this action. Please login again.';
+            break;
+          case 404:
+            errorTitle = 'Not Found';
+            errorMessage = error.error?.message || 'The requested resource was not found.';
+            break;
+          case 400:
+            errorTitle = 'Bad Request';
+            errorMessage = error.error?.message || 'Invalid request. Please check your input.';
+            break;
+          case 500:
+            errorTitle = 'Server Error';
+            errorMessage = 'A critical server error occurred. Please try again later.';
+            break;
+          default:
+            errorMessage = error.error?.message || error.message || errorMessage;
+            break;
         }
         
-        // Global popup error message
-        alert(`System Error: ${errorMessage}`);
+        // Global popup error message with specific branding
+        alert(`[${errorTitle}] ${errorMessage}`);
         
         return throwError(() => error);
       })

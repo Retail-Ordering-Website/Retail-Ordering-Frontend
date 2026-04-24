@@ -36,7 +36,7 @@ export class CategoryComponent implements OnInit {
     this.isLoading = true;
     this.categoryService.getAll().subscribe({
       next: (res) => {
-        if (res.data) {
+        if (res.success && res.data) {
           this.categories = res.data;
         } else {
           this.error = res.message || 'Failed to load categories.';

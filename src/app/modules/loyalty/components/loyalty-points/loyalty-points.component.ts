@@ -21,8 +21,8 @@ export class LoyaltyPointsComponent implements OnInit {
     this.isLoading = true;
     this.promotionService.getLoyaltyPoints().subscribe({
       next: (res) => {
-        if (res.data !== undefined) {
-          this.points = res.data;
+        if (res.success && res.data !== null) {
+          this.points = res.data ?? 0;
         }
         this.isLoading = false;
       },

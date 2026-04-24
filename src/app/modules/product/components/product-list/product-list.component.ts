@@ -55,7 +55,7 @@ export class ProductListComponent implements OnInit {
     this.isLoading = true;
     this.productService.getAll().subscribe({
       next: (res) => {
-        if (res.data) {
+        if (res.success && res.data) {
           this.products = res.data;
         } else {
           this.error = res.message || 'Failed to load products.';
