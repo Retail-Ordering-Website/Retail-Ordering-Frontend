@@ -5,7 +5,9 @@ export interface ProductDto {
   price: number;
   stock: number;
   imageUrl: string;
+  categoryId: number;
   categoryName: string;
+  brandId: number;
   brandName: string;
 }
 
@@ -29,6 +31,12 @@ export interface SearchFilterDto {
 }
 
 export interface CategoryDto {
+  id?: number;
+  name: string;
+  description?: string;
+}
+
+export interface BrandDto {
   id?: number;
   name: string;
   description?: string;

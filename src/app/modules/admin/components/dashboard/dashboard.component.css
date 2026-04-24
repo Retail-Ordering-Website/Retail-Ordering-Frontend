@@ -117,3 +117,75 @@
 .btn-primary:hover {
   background: #2980b9;
 }
+
+.quick-actions-section {
+  grid-column: 1 / -1;
+  margin-top: 3rem;
+}
+
+.quick-actions-section h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.action-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-color: #3498db;
+}
+
+.action-icon {
+  width: 50px;
+  height: 50px;
+  background: #f8fafc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #3498db;
+  margin-right: 1.2rem;
+}
+
+.action-text h4 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.action-text p {
+  margin: 0.2rem 0 0 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.arrow {
+  margin-left: auto;
+  color: #bdc3c7;
+  transition: transform 0.3s ease;
+}
+
+.action-card:hover .arrow {
+  transform: translateX(5px);
+  color: #3498db;
+}
