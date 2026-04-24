@@ -35,15 +35,12 @@
         <p>{{ product.description }}</p>
       </div>
       
-      <div class="actions-section">
+      <div class="actions-section" *ngIf="!isAdmin">
         <button class="btn btn-primary btn-large" [disabled]="product.stock === 0 || isAddingToCart" (click)="addToCart()">
           <span *ngIf="isAddingToCart" class="btn-spinner"></span>
           <span *ngIf="!isAddingToCart">
-            <i class="fas fa-shopping-cart"></i> {{ addedMessage ? addedMessage : 'Add to Cart' }}
+            <i class="fas fa-shopping-cart"></i> Add to Cart
           </span>
-        </button>
-        <button class="btn btn-secondary btn-large">
-          <i class="fas fa-heart"></i> Add to Wishlist
         </button>
       </div>
     </div>

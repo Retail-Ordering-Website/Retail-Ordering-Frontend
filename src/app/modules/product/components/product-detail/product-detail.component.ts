@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { ProductDto } from '../../../../core/models/product.models';
 import { CartService } from '../../../cart/services/cart.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { TokenDto } from '../../../../core/models/auth.models';
 
 @Component({
   selector: 'app-product-detail',
@@ -15,14 +18,20 @@ export class ProductDetailComponent implements OnInit {
   error = '';
   isAddingToCart = false;
   addedMessage = '';
+  isAdmin = false;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe((user: TokenDto | null) => {
+      this.isAdmin = user?.role === 'Admin';
+    });
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.fetchProductDetails(parseInt(idParam, 10));
@@ -60,8 +69,7 @@ export class ProductDetailComponent implements OnInit {
     this.cartService.addToCart({ productId: this.product.id, quantity: 1 }).subscribe({
       next: () => {
         this.isAddingToCart = false;
-        this.addedMessage = 'Added to Cart!';
-        setTimeout(() => this.addedMessage = '', 3000);
+        this.router.navigate(['/cart']);
       },
       error: (err) => {
         this.isAddingToCart = false;

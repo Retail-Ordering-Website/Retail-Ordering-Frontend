@@ -45,6 +45,7 @@ export class CheckoutComponent implements OnInit {
     this.orderService.placeOrder(this.request).subscribe({
       next: (res) => {
         this.isSubmitting = false;
+        alert('You ordered this product successfully!');
         this.router.navigate(['/order/success'], { state: { confirmation: res.data } });
       },
       error: (err) => {

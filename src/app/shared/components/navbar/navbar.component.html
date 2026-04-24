@@ -38,8 +38,8 @@
         <a routerLink="/user/profile" class="user-info-link" title="View Profile">
           <span class="role-badge" [ngClass]="userRole.toLowerCase()">{{ userRole }}</span>
         </a>
-        <button (click)="logout()" class="btn btn-icon-only" title="Logout">
-          <i class="fas fa-sign-out-alt"></i>
+        <button (click)="logout()" class="btn btn-outline btn-sm" title="Logout">
+          <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
         </button>
       </div>
     </div>
