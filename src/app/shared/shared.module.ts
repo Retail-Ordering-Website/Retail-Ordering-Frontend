@@ -7,6 +7,8 @@ import { ModalComponent } from './components/modal/modal.component';
 
 
 
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     NavbarComponent,
@@ -15,7 +17,14 @@ import { ModalComponent } from './components/modal/modal.component';
     ModalComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
+  ],
+  exports: [
+    NavbarComponent,
+    FooterComponent,
+    LoaderComponent,
+    ModalComponent
   ]
 })
 export class SharedModule { }

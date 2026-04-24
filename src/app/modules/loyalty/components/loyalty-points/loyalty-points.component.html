@@ -1,1 +1,40 @@
-<p>loyalty-points works!</p>
+<div class="loyalty-container">
+  <div class="loyalty-card">
+    <div class="header">
+      <div class="icon-circle">
+        <i class="fas fa-crown"></i>
+      </div>
+      <h1>My Rewards</h1>
+      <p>Earn points with every purchase and redeem them for discounts.</p>
+    </div>
+
+    <div *ngIf="isLoading" class="state-panel loading-state">
+      <div class="spinner"></div>
+      <p>Loading your points balance...</p>
+    </div>
+
+    <div *ngIf="error" class="state-panel error-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button class="btn btn-outline" (click)="fetchPoints()">Retry</button>
+    </div>
+
+    <div *ngIf="!isLoading && !error" class="points-display">
+      <div class="points-circle">
+        <span class="points-value">{{ points }}</span>
+        <span class="points-label">PTS</span>
+      </div>
+      <div class="points-info">
+        <h3>You're doing great!</h3>
+        <p>10 Points = ₹1.00 off your next order.</p>
+        <div class="value-equiv">
+          Equivalent value: <strong>{{ (points / 10) | currency:'INR' }}</strong>
+        </div>
+      </div>
+      
+      <div class="actions">
+        <a routerLink="/products" class="btn btn-primary btn-large">Earn More Points</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,24 @@
-<p>apply-coupon works!</p>
+<div class="coupon-widget">
+  <div class="coupon-input-group">
+    <i class="fas fa-tag coupon-icon"></i>
+    <input 
+      type="text" 
+      class="form-control text-uppercase" 
+      placeholder="Enter promo code" 
+      [(ngModel)]="code"
+      [disabled]="isApplying"
+      (keyup.enter)="applyCoupon()">
+    <button class="btn btn-primary" (click)="applyCoupon()" [disabled]="!code.trim() || isApplying">
+      <span *ngIf="isApplying" class="btn-spinner"></span>
+      <span *ngIf="!isApplying">Apply</span>
+    </button>
+  </div>
+  
+  <div *ngIf="successMessage" class="feedback-msg success-msg">
+    <i class="fas fa-check-circle"></i> {{ successMessage }}
+  </div>
+  
+  <div *ngIf="errorMessage" class="feedback-msg error-msg">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+</div>

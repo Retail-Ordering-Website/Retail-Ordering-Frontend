@@ -1,1 +1,64 @@
-<p>order-summary works!</p>
+<div class="admin-orders-container">
+  <div class="admin-header">
+    <h1>Order Management</h1>
+    <p>View and update all customer orders across the platform.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading all orders...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchOrders()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <div *ngIf="orders.length === 0" class="empty-state">
+      <i class="fas fa-clipboard-list empty-icon"></i>
+      <h2>No Orders Found</h2>
+      <p>There are no orders in the system yet.</p>
+    </div>
+
+    <div *ngIf="orders.length > 0" class="orders-table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Delivery Address</th>
+            <th>Total Amount</th>
+            <th>Current Status</th>
+            <th>Update Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td class="order-number font-weight-bold">#{{ order.orderNumber }}</td>
+            <td>{{ order.createdAt | date:'short' }}</td>
+            <td class="address-cell">{{ order.deliveryAddress || 'N/A' }}</td>
+            <td class="font-weight-bold">{{ order.totalAmount | currency }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                {{ order.status }}
+              </span>
+            </td>
+            <td class="action-cell">
+              <div class="status-updater">
+                <select 
+                  [ngModel]="order.status" 
+                  (ngModelChange)="updateStatus(order, $event)"
+                  class="form-select"
+                  [disabled]="updatingOrderId === order.id">
+                  <option *ngFor="let opt of statusOptions" [value]="opt.label">{{ opt.label }}</option>
+                </select>
+                <span *ngIf="updatingOrderId === order.id" class="update-spinner"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

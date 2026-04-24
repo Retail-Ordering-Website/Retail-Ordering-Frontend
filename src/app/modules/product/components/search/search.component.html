@@ -1,1 +1,94 @@
-<p>search works!</p>
+<div class="search-container">
+  <div class="search-sidebar">
+    <div class="filter-card">
+      <h3>Advanced Search</h3>
+      <p class="filter-desc">Find exactly what you need.</p>
+      
+      <form (ngSubmit)="onSearch()" class="filter-form">
+        <div class="form-group">
+          <label for="query">Keyword</label>
+          <input type="text" id="query" name="query" [(ngModel)]="filter.query" class="form-control" placeholder="E.g., Laptop, Shoes...">
+        </div>
+        
+        <div class="form-group">
+          <label for="categoryId">Category ID</label>
+          <input type="number" id="categoryId" name="categoryId" [(ngModel)]="filter.categoryId" class="form-control" placeholder="Any">
+        </div>
+        
+        <div class="form-group">
+          <label for="brandId">Brand ID</label>
+          <input type="number" id="brandId" name="brandId" [(ngModel)]="filter.brandId" class="form-control" placeholder="Any">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="minPrice">Min Price ($)</label>
+            <input type="number" id="minPrice" name="minPrice" [(ngModel)]="filter.minPrice" class="form-control" placeholder="0">
+          </div>
+          <div class="form-group col">
+            <label for="maxPrice">Max Price ($)</label>
+            <input type="number" id="maxPrice" name="maxPrice" [(ngModel)]="filter.maxPrice" class="form-control" placeholder="1000">
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="btn-spinner"></span>
+            <span *ngIf="!isLoading"><i class="fas fa-search"></i> Search</span>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetFilters()" [disabled]="isLoading">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="search-results">
+    <div class="results-header" *ngIf="hasSearched && !isLoading">
+      <h2>Search Results</h2>
+      <p>Found {{ products.length }} item(s) matching your criteria.</p>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Searching catalog...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="!isLoading && hasSearched && products.length > 0" class="product-grid">
+      <div *ngFor="let product of products" class="product-card" [routerLink]="['/products', product.id]" style="cursor: pointer;">
+        <div class="product-image-container">
+          <img [src]="product.imageUrl || 'assets/placeholder.jpg'" [alt]="product.name" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+          <span class="category-badge">{{ product.categoryName }}</span>
+        </div>
+        
+        <div class="product-details">
+          <div class="brand-name">{{ product.brandName }}</div>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-description">{{ product.description }}</p>
+          
+          <div class="product-footer">
+            <div class="price">{{ product.price | currency }}</div>
+            <div class="stock-status" [ngClass]="{'in-stock': product.stock > 10, 'low-stock': product.stock > 0 && product.stock <= 10, 'out-of-stock': product.stock === 0}">
+              {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && hasSearched && products.length === 0 && !error" class="no-products">
+      <i class="fas fa-search-minus empty-icon"></i>
+      <h3>No matches found</h3>
+      <p>Try adjusting your search filters.</p>
+    </div>
+
+    <div *ngIf="!hasSearched" class="empty-state">
+      <i class="fas fa-search empty-icon"></i>
+      <h3>Start Searching</h3>
+      <p>Use the filters on the left to explore our products.</p>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,88 @@
-<p>cart-page works!</p>
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Your Shopping Cart</h1>
+    <p>Review your items and proceed to checkout.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading your cart...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="loadCart()">Try Again</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <!-- Empty Cart -->
+    <div *ngIf="!cart || !cart.items || cart.items.length === 0" class="empty-cart">
+      <i class="fas fa-shopping-basket empty-icon"></i>
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added anything to your cart yet.</p>
+      <a routerLink="/products" class="btn btn-primary btn-large">Start Shopping</a>
+    </div>
+
+    <!-- Cart With Items -->
+    <div *ngIf="cart && cart.items && cart.items.length > 0" class="cart-content">
+      <div class="cart-items">
+        <div class="cart-actions-top">
+          <button class="btn btn-danger btn-sm" (click)="clearCart()">
+            <i class="fas fa-trash-alt"></i> Clear Cart
+          </button>
+        </div>
+
+        <div class="item-card" *ngFor="let item of cart.items">
+          <div class="item-image">
+            <i class="fas fa-box item-placeholder"></i>
+          </div>
+          <div class="item-details">
+            <h3 class="item-name" [routerLink]="['/products', item.productId]">{{ item.productName }}</h3>
+            <p class="item-price">{{ item.price | currency }}</p>
+          </div>
+          <div class="item-quantity">
+            <span class="qty-badge">Qty: {{ item.quantity }}</span>
+          </div>
+          <div class="item-subtotal">
+            {{ item.subtotal | currency }}
+          </div>
+          <div class="item-actions">
+            <button class="btn-icon" (click)="removeItem(item.productId)" title="Remove item">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-card">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Subtotal ({{ cart.items.length }} items)</span>
+            <span>{{ cart.total | currency }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Estimated Tax</span>
+            <span>Calculated at checkout</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span>{{ cart.total | currency }}</span>
+          </div>
+          
+          <button class="btn btn-primary btn-block btn-checkout">
+            Proceed to Checkout
+          </button>
+          
+          <div class="continue-shopping">
+            <a routerLink="/products">or Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

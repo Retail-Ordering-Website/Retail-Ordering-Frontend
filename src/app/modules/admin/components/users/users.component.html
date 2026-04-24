@@ -1,1 +1,73 @@
-<p>users works!</p>
+<div class="users-container">
+  <div class="users-header">
+    <h1>Manage Users</h1>
+    <p>View and manage platform users</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchUsers()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="users-table-wrapper">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>
+            <div class="user-name">
+              <div class="avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+              <span>{{ user.name }}</span>
+            </div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>
+            <select 
+              [value]="user.role" 
+              (change)="changeRole(user, $any($event.target).value)"
+              [disabled]="updatingId === user.id"
+              class="role-select">
+              <option value="Admin">Admin</option>
+              <option value="Customer">Customer</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </td>
+          <td>
+            <span class="status-badge" [class.active]="user.isActive" [class.inactive]="!user.isActive">
+              {{ user.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <button 
+              class="btn btn-toggle" 
+              [class.btn-deactivate]="user.isActive"
+              [class.btn-activate]="!user.isActive"
+              [disabled]="updatingId === user.id"
+              (click)="toggleActive(user)">
+              <span *ngIf="updatingId === user.id; else toggleText" class="btn-spinner"></span>
+              <ng-template #toggleText>{{ user.isActive ? 'Deactivate' : 'Activate' }}</ng-template>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="6" class="no-data">No users found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

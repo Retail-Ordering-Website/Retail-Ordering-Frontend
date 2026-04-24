@@ -1,1 +1,58 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>Overview of your platform's performance</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchDashboard()">Retry</button>
+  </div>
+
+  <div *ngIf="!loading && !error && dashboardData" class="dashboard-grid">
+    <div class="stat-card">
+      <div class="icon-wrapper bg-blue">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Users</h3>
+        <p class="stat-value">{{ dashboardData.totalUsers }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon-wrapper bg-green">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Orders</h3>
+        <p class="stat-value">{{ dashboardData.totalOrders }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="icon-wrapper bg-purple">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Total Revenue</h3>
+        <p class="stat-value">{{ dashboardData.totalRevenue | currency }}</p>
+      </div>
+    </div>
+
+    <div class="stat-card" [class.warning]="dashboardData.lowStockProducts > 0">
+      <div class="icon-wrapper bg-orange">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Low Stock Products</h3>
+        <p class="stat-value">{{ dashboardData.lowStockProducts }}</p>
+      </div>
+    </div>
+  </div>
+</div>
