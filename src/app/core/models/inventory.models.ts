@@ -8,7 +8,7 @@ export interface InventoryDto {
 }
 
 export interface StockUpdateDto {
-  productId: number;
+  id: number;
   stock: number;
 }
 

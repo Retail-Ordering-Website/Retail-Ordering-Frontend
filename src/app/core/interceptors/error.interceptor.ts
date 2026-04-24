@@ -15,8 +15,14 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    const skipInterceptor = request.headers.has('X-Skip-Error-Interceptor');
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (skipInterceptor) {
+          return throwError(() => error);
+        }
+
         let errorMessage = 'An unexpected error occurred.';
         
         if (error.error instanceof ErrorEvent) {

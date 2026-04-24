@@ -39,12 +39,21 @@ export class InventoryManagementComponent implements OnInit {
     });
   }
 
-  updateStock(item: InventoryDto, newStockValue: string): void {
-    const newStock = parseInt(newStockValue, 10);
-    if (isNaN(newStock) || newStock < 0) return;
+  updateStock(item: InventoryDto, newStockValue: any): void {
+    const newStock = Number(newStockValue);
+    
+    if (isNaN(newStock) || newStock < 0) {
+      alert('Please enter a valid positive number for stock.');
+      return;
+    }
 
     this.updatingStockId = item.productId;
-    const updateDto: StockUpdateDto = { productId: item.productId, stock: newStock };
+    
+    // Explicitly mapping to match backend DTO expectations
+    const updateDto: StockUpdateDto = { 
+      id: item.productId, 
+      stock: newStock 
+    };
 
     this.inventoryService.updateStock(updateDto).subscribe({
       next: (res) => {
@@ -56,8 +65,8 @@ export class InventoryManagementComponent implements OnInit {
         this.updatingStockId = null;
       },
       error: (err) => {
-        console.error('Failed to update stock', err);
         this.updatingStockId = null;
+        // The ErrorInterceptor will show the alert
       }
     });
   }

@@ -35,7 +35,9 @@ export class AuthService {
   }
 
   login(dto: LoginDto): Observable<ApiResponse<TokenDto>> {
-    return this.http.post<ApiResponse<TokenDto>>(`${this.apiUrl}/login`, dto).pipe(
+    return this.http.post<ApiResponse<TokenDto>>(`${this.apiUrl}/login`, dto, {
+      headers: { 'X-Skip-Error-Interceptor': 'true' }
+    }).pipe(
       tap(res => this.handleAuthResponse(res))
     );
   }
