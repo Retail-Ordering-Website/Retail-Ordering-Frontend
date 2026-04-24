@@ -9,8 +9,11 @@
     
     <ul class="nav-links">
       <li><a routerLink="/products" routerLinkActive="active">Catalog</a></li>
-      <li *ngIf="isLoggedIn"><a routerLink="/history" routerLinkActive="active">My Orders</a></li>
+      <li *ngIf="isLoggedIn && userRole !== 'Admin'"><a routerLink="/history" routerLinkActive="active">My Orders</a></li>
       <li *ngIf="isLoggedIn"><a routerLink="/promotions" routerLinkActive="active">Offers</a></li>
+      <li *ngIf="isLoggedIn && userRole === 'Admin'" class="admin-link">
+        <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Dashboard</a>
+      </li>
       <li *ngIf="isLoggedIn && userRole === 'Admin'" class="admin-link">
         <a routerLink="/inventory" routerLinkActive="active">Inventory</a>
       </li>

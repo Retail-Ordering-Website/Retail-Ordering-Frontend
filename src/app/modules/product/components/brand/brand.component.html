@@ -1,0 +1,38 @@
+<div class="brand-container">
+  <div class="section-header">
+    <h2>Manage Brands</h2>
+    <p>Configure product brands for the catalog.</p>
+  </div>
+
+  <div *ngIf="isAdmin" class="create-form-card">
+    <h3>Add New Brand</h3>
+    <form (ngSubmit)="onCreate()" #brandForm="ngForm" class="inline-form">
+      <div class="form-group">
+        <input type="text" name="name" [(ngModel)]="newBrand.name" placeholder="Brand Name" required class="form-control">
+      </div>
+      <div class="form-group">
+        <input type="text" name="desc" [(ngModel)]="newBrand.description" placeholder="Description (Optional)" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!brandForm.valid || isCreating">
+        <i class="fas fa-plus"></i> Add
+      </button>
+    </form>
+    <div *ngIf="message" class="alert success">{{ message }}</div>
+  </div>
+
+  <div *ngIf="isLoading" class="loader">Loading...</div>
+
+  <div class="brand-list" *ngIf="!isLoading">
+    <div *ngFor="let brand of brands" class="brand-item">
+      <div class="brand-info">
+        <strong>{{ brand.name }}</strong>
+        <p *ngIf="brand.description">{{ brand.description }}</p>
+      </div>
+      <div class="brand-actions" *ngIf="isAdmin">
+        <button class="btn btn-icon-danger" (click)="onDelete(brand.id!)" title="Delete">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

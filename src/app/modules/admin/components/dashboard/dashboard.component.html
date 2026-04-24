@@ -54,5 +54,43 @@
         <p class="stat-value">{{ dashboardData.lowStockProducts }}</p>
       </div>
     </div>
+
+    <div class="quick-actions-section">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/products" class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="action-text">
+            <h4>View Catalog</h4>
+            <p>Browse products as a customer</p>
+          </div>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+
+        <a routerLink="/inventory" class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-boxes"></i>
+          </div>
+          <div class="action-text">
+            <h4>Manage Stock</h4>
+            <p>Update inventory levels</p>
+          </div>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+
+        <a routerLink="/order/admin-summary" class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-clipboard-list"></i>
+          </div>
+          <div class="action-text">
+            <h4>Process Orders</h4>
+            <p>Update order statuses</p>
+          </div>
+          <i class="fas fa-chevron-right arrow"></i>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
