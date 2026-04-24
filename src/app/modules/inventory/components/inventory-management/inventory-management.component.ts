@@ -52,7 +52,7 @@ export class InventoryManagementComponent implements OnInit {
     // Explicitly mapping to match backend DTO expectations
     const updateDto: StockUpdateDto = { 
       id: item.productId, 
-      stock: newStock 
+      newStock: newStock 
     };
 
     this.inventoryService.updateStock(updateDto).subscribe({

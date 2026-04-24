@@ -71,8 +71,12 @@ export class ProductListComponent implements OnInit {
   }
 
   fetchMetadata(): void {
-    this.categoryService.getAll().subscribe(res => this.categories = res.data || []);
-    this.brandService.getAll().subscribe(res => this.brands = res.data || []);
+    this.categoryService.getAll().subscribe(res => {
+      if (res.success && res.data) this.categories = res.data;
+    });
+    this.brandService.getAll().subscribe(res => {
+      if (res.success && res.data) this.brands = res.data;
+    });
   }
 
   onSaveProduct(): void {
@@ -103,12 +107,14 @@ export class ProductListComponent implements OnInit {
   }
 
   openAddModal(): void {
+    this.fetchMetadata();
     this.editingProduct = null;
     this.newProduct = { name: '', description: '', price: 0, imageUrl: '', categoryId: 0, brandId: 0, stock: 0 };
     this.isAdding = true;
   }
 
   openEditModal(product: ProductDto): void {
+    this.fetchMetadata();
     this.editingProduct = product;
     this.newProduct = {
       name: product.name,
