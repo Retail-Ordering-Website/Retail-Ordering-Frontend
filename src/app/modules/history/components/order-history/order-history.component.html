@@ -1,1 +1,93 @@
-<p>order-history works!</p>
+<div class="history-container">
+  <div class="history-header">
+    <h1>Order History</h1>
+    <p>View your past orders and their status.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading your orders...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchHistory()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <div *ngIf="orders.length === 0" class="empty-state">
+      <i class="fas fa-box-open empty-icon"></i>
+      <h2>No Orders Yet</h2>
+      <p>You haven't placed any orders. Start shopping today!</p>
+      <a routerLink="/products" class="btn btn-primary btn-large">Browse Products</a>
+    </div>
+
+    <div *ngIf="orders.length > 0" class="orders-list">
+      <div *ngFor="let order of orders" class="order-card" [class.expanded]="expandedOrderId === order.id">
+        <!-- Order Header -->
+        <div class="order-summary" (click)="toggleDetails(order.id)">
+          <div class="summary-col">
+            <span class="label">Order Number</span>
+            <span class="value order-number">#{{ order.orderNumber }}</span>
+          </div>
+          <div class="summary-col">
+            <span class="label">Date Placed</span>
+            <span class="value">{{ order.createdAt | date:'mediumDate' }}</span>
+          </div>
+          <div class="summary-col">
+            <span class="label">Total Amount</span>
+            <span class="value font-weight-bold">{{ order.totalAmount | currency }}</span>
+          </div>
+          <div class="summary-col status-col">
+            <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+              {{ order.status }}
+            </span>
+          </div>
+          <div class="summary-col toggle-col">
+            <i class="fas" [ngClass]="expandedOrderId === order.id ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </div>
+        </div>
+
+        <!-- Order Details (Expanded) -->
+        <div class="order-details-pane" *ngIf="expandedOrderId === order.id">
+          <h4 class="details-title">Order Items</h4>
+          
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of order.items">
+                <td>
+                  <div class="item-name">
+                    <i class="fas fa-shopping-bag"></i>
+                    {{ item.productName }}
+                  </div>
+                </td>
+                <td class="text-center">{{ item.unitPrice | currency }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-right font-weight-bold">{{ item.subtotal | currency }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="text-right label">Order Total:</td>
+                <td class="text-right total-value">{{ order.totalAmount | currency }}</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <div class="order-actions">
+            <button class="btn btn-secondary"><i class="fas fa-receipt"></i> Download Invoice</button>
+            <button class="btn btn-primary"><i class="fas fa-sync-alt"></i> Reorder Items</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

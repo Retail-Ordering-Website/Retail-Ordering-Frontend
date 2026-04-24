@@ -1,0 +1,182 @@
+.admin-orders-container {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  margin-bottom: 2.5rem;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.admin-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.orders-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 1.2rem;
+  background: #f8fafc;
+  color: #4a5568;
+  font-weight: 700;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td {
+  padding: 1.2rem;
+  border-bottom: 1px solid #edf2f7;
+  color: #2d3748;
+  vertical-align: middle;
+}
+
+.admin-table tr:hover {
+  background: #f1f5f9;
+}
+
+.order-number {
+  color: #3182ce;
+  font-family: monospace;
+  font-size: 1.1rem;
+}
+
+.font-weight-bold {
+  font-weight: 700;
+}
+
+.address-cell {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #718096;
+}
+
+/* Badges */
+.status-badge {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.status-pending { background: #ebf8ff; color: #3182ce; }
+.status-confirmed { background: #e6fffa; color: #319795; }
+.status-processing { background: #faf5ff; color: #805ad5; }
+.status-shipped { background: #fffff0; color: #d69e2e; }
+.status-delivered { background: #f0fff4; color: #38a169; }
+.status-cancelled { background: #fff5f5; color: #e53e3e; }
+.status-default { background: #edf2f7; color: #4a5568; }
+
+/* Status Updater */
+.action-cell {
+  width: 200px;
+}
+
+.status-updater {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: white;
+  color: #2d3748;
+  font-size: 0.95rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-select:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.update-spinner {
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border-left-color: #3498db;
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Utilities */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-primary { background: #3498db; color: white; }
+.btn-primary:hover { background: #2980b9; transform: translateY(-2px); }
+
+.loading-state, .error-state, .empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-left-color: #3498db;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 1.5rem;
+}
+
+.error-state { color: #e74c3c; }

@@ -1,1 +1,44 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/">
+        <i class="fas fa-shopping-bag"></i>
+        <span>RetailPro</span>
+      </a>
+    </div>
+    
+    <ul class="nav-links">
+      <li><a routerLink="/products" routerLinkActive="active">Catalog</a></li>
+      <li *ngIf="isLoggedIn"><a routerLink="/history" routerLinkActive="active">My Orders</a></li>
+      <li *ngIf="isLoggedIn"><a routerLink="/promotions" routerLinkActive="active">Offers</a></li>
+      <li *ngIf="isLoggedIn && userRole === 'Admin'" class="admin-link">
+        <a routerLink="/inventory" routerLinkActive="active">Inventory</a>
+      </li>
+      <li *ngIf="isLoggedIn && userRole === 'Admin'" class="admin-link">
+        <a routerLink="/order/admin-summary" routerLinkActive="active">Admin Orders</a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <div *ngIf="isLoggedIn" class="cart-link">
+        <a routerLink="/cart" class="icon-btn">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+
+      <div *ngIf="!isLoggedIn" class="auth-buttons">
+        <a routerLink="/auth/login" class="btn btn-text">Login</a>
+        <a routerLink="/auth/register" class="btn btn-primary">Join Now</a>
+      </div>
+
+      <div *ngIf="isLoggedIn" class="user-profile">
+        <a routerLink="/user/profile" class="user-info-link" title="View Profile">
+          <span class="role-badge" [ngClass]="userRole.toLowerCase()">{{ userRole }}</span>
+        </a>
+        <button (click)="logout()" class="btn btn-icon-only" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

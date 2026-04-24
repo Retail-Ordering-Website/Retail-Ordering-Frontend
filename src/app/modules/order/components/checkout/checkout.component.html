@@ -1,1 +1,77 @@
-<p>checkout works!</p>
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1>Checkout</h1>
+    <p>Complete your order securely.</p>
+  </div>
+
+  <div *ngIf="error" class="error-alert">
+    <i class="fas fa-exclamation-circle"></i> {{ error }}
+  </div>
+
+  <div class="checkout-grid" *ngIf="cart">
+    
+    <!-- Left Column: Form -->
+    <div class="checkout-form-section">
+      <form (ngSubmit)="placeOrder()" #checkoutForm="ngForm">
+        
+        <div class="card form-card">
+          <h3><i class="fas fa-map-marker-alt"></i> Delivery Details</h3>
+          <div class="form-group">
+            <label for="address">Full Delivery Address *</label>
+            <textarea id="address" name="address" [(ngModel)]="request.deliveryAddress" required rows="3" class="form-control" placeholder="123 Main St, Apartment 4B, City, ZIP"></textarea>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <h3><i class="fas fa-tags"></i> Discounts & Rewards</h3>
+          <div class="form-group">
+            <label for="promo">Promo/Discount Code</label>
+            <input type="text" id="promo" name="promo" [(ngModel)]="request.discountCode" class="form-control" placeholder="e.g. SUMMER20">
+          </div>
+          <div class="form-check mt-3">
+            <input type="checkbox" id="points" name="points" [(ngModel)]="request.useRewardPoints" class="form-check-input">
+            <label for="points" class="form-check-label">Use my available Loyalty Points</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-4" [disabled]="!checkoutForm.valid || isSubmitting">
+          <span *ngIf="isSubmitting" class="btn-spinner"></span>
+          <span *ngIf="!isSubmitting">Place Order</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Column: Summary -->
+    <div class="checkout-summary-section">
+      <div class="card summary-card">
+        <h3>Order Summary</h3>
+        
+        <div class="summary-items">
+          <div *ngFor="let item of cart.items" class="summary-item">
+            <div class="item-info">
+              <span class="item-qty">{{ item.quantity }}x</span>
+              <span class="item-name">{{ item.productName }}</span>
+            </div>
+            <div class="item-price">{{ item.subtotal | currency }}</div>
+          </div>
+        </div>
+
+        <div class="summary-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>{{ cart.total | currency }}</span>
+          </div>
+          <div class="total-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Estimated Total</span>
+            <span>{{ cart.total | currency }}</span>
+          </div>
+          <p class="summary-note">Note: Any applied discounts or points will be reflected on the final confirmation page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

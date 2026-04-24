@@ -1,1 +1,31 @@
-<p>order-success works!</p>
+<div class="success-container" *ngIf="confirmation">
+  <div class="success-card">
+    <div class="icon-circle">
+      <i class="fas fa-check"></i>
+    </div>
+    
+    <h1>Order Confirmed!</h1>
+    <p class="subtitle">Thank you for your purchase.</p>
+
+    <div class="order-details">
+      <div class="detail-row">
+        <span class="label">Order Number</span>
+        <span class="value order-num">{{ confirmation.orderNumber }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Total Amount</span>
+        <span class="value total">{{ confirmation.totalAmount | currency }}</span>
+      </div>
+    </div>
+
+    <div class="message-box">
+      <i class="fas fa-info-circle"></i>
+      <p>{{ confirmation.message }}</p>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/history" class="btn btn-primary btn-large">View Order History</a>
+      <a routerLink="/products" class="btn btn-secondary btn-large">Continue Shopping</a>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,122 @@
-<p>offers works!</p>
+<div class="offers-container">
+  <!-- Loyalty Points Banner -->
+  <div class="loyalty-banner" *ngIf="loyaltyPoints > 0 && !isAdmin">
+    <div class="banner-content">
+      <div class="icon-wrapper gold-bg">
+        <i class="fas fa-gem"></i>
+      </div>
+      <div>
+        <h3>Your Loyalty Points</h3>
+        <p>You have <strong>{{ loyaltyPoints }}</strong> points to spend! Check the box at checkout to apply your discount.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="offers-header">
+    <h1>Special Offers & Promotions</h1>
+    <p>Discover our latest discounts and save on your favorite products.</p>
+  </div>
+
+  <!-- Admin: Create Promotion -->
+  <div *ngIf="isAdmin" class="admin-create-section">
+    <div class="card create-card">
+      <h3><i class="fas fa-bullhorn"></i> Create New Promotion</h3>
+      
+      <div *ngIf="createMessage" class="alert alert-success">{{ createMessage }}</div>
+      <div *ngIf="createError" class="alert alert-danger">{{ createError }}</div>
+
+      <form (ngSubmit)="onCreatePromo()" #promoForm="ngForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Promotion Name *</label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="newPromo.name" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Promo Code *</label>
+            <input type="text" class="form-control text-uppercase" name="code" [(ngModel)]="newPromo.code" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" name="description" [(ngModel)]="newPromo.description" rows="2"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Discount % *</label>
+            <input type="number" class="form-control" name="discount" [(ngModel)]="newPromo.discountPercent" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Min Order Amount *</label>
+            <input type="number" class="form-control" name="minOrder" [(ngModel)]="newPromo.minOrderAmount" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Max Total Usage *</label>
+            <input type="number" class="form-control" name="maxUsage" [(ngModel)]="newPromo.maxTotalUsage" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Start Date *</label>
+            <input type="date" class="form-control" name="startDate" [(ngModel)]="newPromo.startDate" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label>End Date *</label>
+            <input type="date" class="form-control" name="endDate" [(ngModel)]="newPromo.endDate" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3" [disabled]="!promoForm.valid || isCreating">
+          <span *ngIf="isCreating" class="btn-spinner"></span>
+          <span *ngIf="!isCreating">Create Promotion</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading active offers...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchPromotions()">Retry</button>
+  </div>
+
+  <!-- Offers Grid -->
+  <div *ngIf="!isLoading && !error" class="offers-grid">
+    <div *ngIf="promotions.length === 0" class="empty-state">
+      <i class="fas fa-ticket-alt empty-icon"></i>
+      <h3>No Active Offers</h3>
+      <p>Check back later for exciting new deals!</p>
+    </div>
+
+    <div *ngFor="let promo of promotions" class="offer-card">
+      <div class="offer-discount">
+        <span class="discount-value">{{ promo.discountPercent }}%</span>
+        <span class="discount-text">OFF</span>
+      </div>
+      <div class="offer-content">
+        <h3>{{ promo.name }}</h3>
+        <p>{{ promo.description }}</p>
+        
+        <div class="offer-details">
+          <span class="detail-item"><i class="fas fa-shopping-cart"></i> Min: {{ promo.minOrderAmount | currency }}</span>
+          <span class="detail-item"><i class="fas fa-clock"></i> Ends: {{ promo.endDate | date }}</span>
+        </div>
+
+        <div class="offer-code-section">
+          <span class="code-label">Use Code:</span>
+          <div class="code-box">{{ promo.code }}</div>
+        </div>
+
+        <button *ngIf="isAdmin" class="btn btn-danger btn-sm mt-3 w-100" (click)="onExpire(promo.id!)">
+          <i class="fas fa-ban"></i> Expire Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

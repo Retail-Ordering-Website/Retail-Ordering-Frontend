@@ -1,0 +1,79 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>My Profile</h1>
+    <p>Manage your account settings and preferences</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <div *ngIf="!isLoading && profile" class="profile-content">
+    
+    <!-- Profile Info Card -->
+    <div class="profile-card user-info-card">
+      <div class="user-avatar-large">
+        {{ profile.name.charAt(0).toUpperCase() }}
+      </div>
+      <div class="user-details">
+        <h2>{{ profile.name }}</h2>
+        <p class="user-email">{{ profile.email }}</p>
+        <div class="user-badges">
+          <span class="badge role-badge">{{ profile.role }}</span>
+          <span class="badge date-badge">Joined {{ profile.createdAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <!-- Update Profile Form -->
+      <div class="profile-card">
+        <h3>Personal Information</h3>
+        <form (ngSubmit)="onUpdateProfile()" #updateForm="ngForm">
+          <div *ngIf="profileMessage" class="alert alert-success">{{ profileMessage }}</div>
+          <div *ngIf="profileError" class="alert alert-danger">{{ profileError }}</div>
+
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="updateData.name" required class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label>Email (Read Only)</label>
+            <input type="email" [value]="profile.email" disabled class="form-control disabled-input" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid || isUpdatingProfile">
+            <span *ngIf="isUpdatingProfile" class="btn-spinner"></span>
+            <span *ngIf="!isUpdatingProfile">Save Changes</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Change Password Form -->
+      <div class="profile-card">
+        <h3>Change Password</h3>
+        <form (ngSubmit)="onChangePassword()" #passwordForm="ngForm">
+          <div *ngIf="passwordMessage" class="alert alert-success">{{ passwordMessage }}</div>
+          <div *ngIf="passwordError" class="alert alert-danger">{{ passwordError }}</div>
+
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input type="password" id="currentPassword" name="currentPassword" [(ngModel)]="passwordData.currentPassword" required class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" [(ngModel)]="passwordData.newPassword" required class="form-control" />
+          </div>
+
+          <button type="submit" class="btn btn-secondary" [disabled]="!passwordForm.valid || isChangingPassword">
+            <span *ngIf="isChangingPassword" class="btn-spinner"></span>
+            <span *ngIf="!isChangingPassword">Update Password</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

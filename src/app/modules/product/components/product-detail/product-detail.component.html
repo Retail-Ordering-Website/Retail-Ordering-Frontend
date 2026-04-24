@@ -1,1 +1,51 @@
-<p>product-detail works!</p>
+<div class="product-detail-container">
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading product details...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <a routerLink="/products" class="btn btn-secondary">Back to Products</a>
+  </div>
+
+  <div *ngIf="!isLoading && product" class="product-card">
+    <div class="product-image-section">
+      <img [src]="product.imageUrl || 'assets/placeholder.jpg'" [alt]="product.name" class="main-image" onerror="this.src='https://via.placeholder.com/600x400?text=No+Image'">
+    </div>
+    
+    <div class="product-info-section">
+      <div class="badges">
+        <span class="badge category-badge">{{ product.categoryName }}</span>
+        <span class="badge brand-badge">{{ product.brandName }}</span>
+      </div>
+      
+      <h1 class="product-title">{{ product.name }}</h1>
+      <p class="product-id">Product ID: #{{ product.id }}</p>
+      
+      <div class="price-section">
+        <span class="price">{{ product.price | currency }}</span>
+        <span class="stock-status" [ngClass]="{'in-stock': product.stock > 10, 'low-stock': product.stock > 0 && product.stock <= 10, 'out-of-stock': product.stock === 0}">
+          {{ product.stock > 0 ? product.stock + ' in stock' : 'Out of Stock' }}
+        </span>
+      </div>
+      
+      <div class="description-section">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+      
+      <div class="actions-section">
+        <button class="btn btn-primary btn-large" [disabled]="product.stock === 0 || isAddingToCart" (click)="addToCart()">
+          <span *ngIf="isAddingToCart" class="btn-spinner"></span>
+          <span *ngIf="!isAddingToCart">
+            <i class="fas fa-shopping-cart"></i> {{ addedMessage ? addedMessage : 'Add to Cart' }}
+          </span>
+        </button>
+        <button class="btn btn-secondary btn-large">
+          <i class="fas fa-heart"></i> Add to Wishlist
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

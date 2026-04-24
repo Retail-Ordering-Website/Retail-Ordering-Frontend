@@ -1,1 +1,64 @@
-<p>inventory-management works!</p>
+<div class="inventory-container">
+  <div class="inventory-header">
+    <h1>Inventory Management</h1>
+    <p>Monitor and update stock levels for all products</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading inventory...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="fetchInventory()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="inventory-table-wrapper">
+    <table class="inventory-table">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Brand</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Current Stock</th>
+          <th>Update Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inventoryItems">
+          <td>{{ item.productId }}</td>
+          <td><strong class="product-name">{{ item.productName }}</strong></td>
+          <td>{{ item.brandName || 'N/A' }}</td>
+          <td><span class="badge">{{ item.categoryName || 'N/A' }}</span></td>
+          <td>{{ item.price | currency }}</td>
+          <td>
+            <span class="stock-badge" 
+                  [class.in-stock]="item.stock > 20" 
+                  [class.low-stock]="item.stock > 0 && item.stock <= 20" 
+                  [class.out-of-stock]="item.stock === 0">
+              {{ item.stock }}
+            </span>
+          </td>
+          <td>
+            <div class="stock-update-group">
+              <input type="number" min="0" [value]="item.stock" #newStockInput class="form-control stock-input" />
+              <button 
+                class="btn btn-sm btn-secondary" 
+                [disabled]="updatingStockId === item.productId || +newStockInput.value === item.stock"
+                (click)="updateStock(item, newStockInput.value)">
+                <span *ngIf="updatingStockId === item.productId; else saveText" class="btn-spinner"></span>
+                <ng-template #saveText>Save</ng-template>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="inventoryItems.length === 0">
+          <td colspan="7" class="no-data">No inventory items found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
